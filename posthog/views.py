@@ -25,7 +25,7 @@ from posthog.utils import (
     is_redis_alive,
 )
 
-from .utils import get_celery_heartbeat
+from .utils import get_available_social_auth_providers, get_celery_heartbeat, get_plugin_server_version
 
 
 def login_required(view):
@@ -153,6 +153,13 @@ def system_status(request):
     metrics.append({"key": "plugin_sever_alive", "metric": "Plugin server alive", "value": is_plugin_server_alive()})
     metrics.append(
         {
+            "key": "plugin_sever_version",
+            "metric": "Plugin server version",
+            "value": get_plugin_server_version() or "unknown",
+        }
+    )
+    metrics.append(
+        {
             "key": "plugins_install",
             "metric": "Plugins can be installed",
             "value": can_install_plugins_via_api(team.organization),
@@ -170,7 +177,7 @@ def system_status(request):
 
 
 @never_cache
-def preflight_check(request):
+def preflight_check(_):
     return JsonResponse(
         {
             "django": True,
@@ -180,5 +187,6 @@ def preflight_check(request):
             "db": is_postgres_alive(),
             "initiated": User.objects.exists(),
             "cloud": settings.MULTI_TENANCY,
+            "available_social_auth_providers": get_available_social_auth_providers(),
         }
     )
