@@ -210,7 +210,7 @@ export const eventUsageLogic = kea<eventUsageLogicType<AnnotationType, FilterTyp
             })
         },
         reportPersonPropertyUpdated: async ({ action, totalProperties, oldPropertyType, newPropertyType }) => {
-            console.log(`person property ${action}`, {
+            posthog.capture(`person property ${action}`, {
                 old_property_type: oldPropertyType !== 'undefined' ? oldPropertyType : undefined,
                 new_property_type: newPropertyType !== 'undefined' ? newPropertyType : undefined,
                 total_properties: totalProperties,
