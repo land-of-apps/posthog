@@ -75,7 +75,6 @@ export const personsLogic = kea<personsLogicType<PersonPaginatedResponse, Person
                     person.properties[key] = newValue
                 }
 
-                console.log(key, newValue, person.properties)
                 actions.setPerson(person) // To update the UI immediately while the request is being processed
                 const response = await api.update(`api/person/${person.id}`, person)
                 actions.setPerson(response)
