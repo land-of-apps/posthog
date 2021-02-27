@@ -72,7 +72,7 @@ export const personsLogic = kea<personsLogicType<PersonPaginatedResponse, Person
                     actions.setHasNewKeys()
                     person.properties = { [key]: parsedValue, ...person.properties } // To add property at the top (if new)
                 } else {
-                    person.properties[key] = pasedValue
+                    person.properties[key] = parsedValue
                 }
 
                 actions.setPerson(person) // To update the UI immediately while the request is being processed
