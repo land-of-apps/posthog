@@ -1,0 +1,25 @@
+# Turn on validation, so we can use import:
+version: ~> 1.0
+
+import: land-of-apps/land-of-apps:travis/python-imports.yml
+
+language: python
+
+python:
+    - '3.8'
+
+services:
+    - postgres
+    - redis
+
+before_script:
+    - createdb posthog
+    - pip install -U pip setuptools
+    - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
+    # 0.8 hasn't been released as stable version -- change this once it has
+    - pip install appmap==0.8.0.dev1
+    - python manage.py migrate
+
+script:
+    - APPMAP=true pytest || true # ee tests will fail -- not OSS
