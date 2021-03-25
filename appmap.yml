@@ -1,0 +1,3 @@
+name: PostHog
+packages:
+- path: posthog
